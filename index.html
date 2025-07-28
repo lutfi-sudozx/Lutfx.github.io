@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Video Downloader | No Watermark</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .language-selector:hover .language-dropdown {
+            display: block;
+        }
+        .progress-bar {
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        #downloadBtn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 font-sans">
+    <!-- Header -->
+    <header class="bg-black text-white py-4 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-pink-500">
+                    <path d="M12.525.12a1 1 0 00-1.05 0C9.96.89 4.392 3.62 4.392 8.55c0 4.94 3.72 8.35 4.89 9.29 1.17-.94 4.89-4.36 4.89-9.29 0-4.93-5.57-7.66-7.075-8.43zM8.18 21.29a1 1 0 01-1.36-.48 1 1 0 01.46-1.34c.48-.22 1.17-.53 1.9-.89.74-.36 1.48-.76 2.07-1.15a10.9 10.9 0 001.32-.94 1 1 0 011.17 0c.34.25.74.51 1.18.74.45.24.89.44 1.3.6.4.16.78.3 1.14.4.35.1.66.17.93.22.27.05.5.07.67.07.17 0 .3-.02.38-.05.08-.02.16-.06.27-.12.1-.05.18-.1.24-.16a1 1 0 01.5-.13 1 1 0 01.73.3 1 1 0 01.3.74 1 1 0 01-1.08.96 1 1 0 01-.8-.4 1 1 0 01-.16-.3 1 1 0 00-.98-.66 1 1 0 00-.98.66 1 1 0 01-1.96-.13 1 1 0 011.02-1.19z" />
+                    <path d="M12 22a10 10 0 100-20 10 10 0 000 20z" />
+                </svg>
+                <h1 class="text-xl font-bold">Tik<span class="text-pink-500">Snap</span></h1>
+            </div>
+            
+            <!-- Language Selector -->
+            <div class="language-selector relative">
+                <button class="flex items-center space-x-2 px-3 py-2 bg-gray-800 rounded-lg">
+                    <span id="current-language">English</span>
+                    <i class="fas fa-chevron-down text-xs"></i>
+                </button>
+                <div class="language-dropdown hidden absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg z-50">
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 flex items-center" data-lang="en">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/77e58f50-bb78-43b0-a086-a9f4341e928f.png" alt="United Kingdom flag with blue background and red cross" class="mr-2" style="width:20px;height:15px;">
+                        English
+                    </a>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 flex items-center" data-lang="id">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e20a223b-0d27-4ebb-a757-22fe27e92d70.png" alt="Indonesian flag with red and white horizontal stripes" class="mr-2" style="width:20px;height:15px;">
+                        Bahasa Indonesia
+                    </a>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 flex items-center" data-lang="es">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/9005b40b-eaf7-4a67-b155-3adf5d364ec0.png" alt="Spanish flag with red and yellow horizontal stripes" class="mr-2" style="width:20px;height:15px;">
+                        Español
+                    </a>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 flex items-center" data-lang="fr">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/ea87a7f6-a9df-48ea-9cbb-17e7ed676924.png" alt="French flag with blue, white and red vertical stripes" class="mr-2" style="width:20px;height:15px;">
+                        Français
+                    </a>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 flex items-center" data-lang="ja">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c03c393f-306e-48f0-b1f6-11c786ddea82.png" alt="Japanese flag with white background and red circle" class="mr-2" style="width:20px;height:15px;">
+                        日本語
+                    </a>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 flex items-center" data-lang="ar">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/96b090d4-150d-4f50-9730-8995644af608.png" alt="Flag of Saudi Arabia" class="mr-2">
+                        العربية
+                    </a>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 flex items-center" data-lang="de">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/419f8dc3-fc44-4e53-bc21-8b3f8e2bbbde.png" alt="Flag of Germany" class="mr-2">
+                        Deutsch
+                    </a>
+                    <a href="#" class="block px学前班時的固定課程中的一部分要延长可以理解探索期及教育资源的限制等方面的困难（刪除這段 SEO stuff）</a>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 flex items-center" data-lang="pt">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/fb0e03d2-650d-4f4c-ac8c-977a53d90c17.png" alt="Flag of Portugal" class="mr-2">
+                        Português
+                    </a>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 flex items-center" data-lang="ru">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e1e305d2-0349-486f-8447-5b57390f43db.png" alt="Flag of Russia" class="mr-2">
+                        Русский
+                    </a>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 flex items-center" data-lang="hi">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4c81910e-a0f2-41ee-a9f1-fdbb05d6638b.png" alt="Flag of India" class="mr-2">
+                        हिंदी
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- Hero Section -->
+        <section class="text-center mb-12">
+            <h2 class="text-4xl font-bold mb-4" data-translate="hero_title">Download TikTok Videos Without Watermark</h2>
+            <p class="text-lg text-gray-600 mb-8" data-translate="hero_subtitle">Paste your TikTok link below to download high quality videos without any watermark</p>
+            
+            <!-- Download Form -->
+            <div class="bg-gray-50 rounded-xl p-6 shadow-inner">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <input 
+                        type="text" 
+                        id="tiktokUrl" 
+                        placeholder="Paste TikTok link here..." 
+                        class="flex-grow px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                        data-translate="input_placeholder">
+                    <button 
+                        id="downloadBtn" 
+                        class="px-6 py-3 bg-pink-500 text-white font-semibold rounded-lg hover:bg-pink-600 transition-colors flex items-center justify-center space-x-2"
+                        data-translate="download_button">
+                        <i class="fas fa-download"></i>
+                        <span>Download</span>
+                    </button>
+                </div>
+                
+                <!-- Progress Bar -->
+                <div class="mt-4 hidden" id="progressContainer">
+                    <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div class="h-full bg-pink-500 progress-bar" id="progressBar"></div>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-1" id="progressText" data-translate="processing">Processing your link...</p>
+                </div>
+                
+                <!-- Error Message -->
+                <div class="mt-4 hidden animate-pulse" id="errorContainer">
+                    <div class="flex items-center gap-2 p-3 bg-red-50 rounded-lg">
+                        <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                        </svg>
+                        <p class="text-red-600 text-sm font-medium" id="errorText"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Video Preview -->
+        <section class="mb-12 hidden" id="videoPreviewSection">
+            <h3 class="text-xl font-semibold mb-4" data-translate="preview_title">Video Preview</h3>
+            <div class="bg-black rounded-xl overflow-hidden shadow-lg">
+                <video id="videoPreview" controls class="w-full"></video>
+            </div>
+            
+            <div class="mt-4 flex flex-wrap gap-3 justify-center">
+                <button id="downloadHD" class="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors flex items-center space-x-2">
+                    <i class="fas fa-download"></i>
+                    <span data-translate="download_hd">Download HD</span>
+                </button>
+                <button id="saveToGallery" class="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors flex items-center space-x-2">
+                    <i class="fas fa-save"></i>
+                    <span data-translate="save_gallery">Save to Gallery</span>
+                </button>
+                <button id="copyLink" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors flex items-center space-x-2">
+                    <i class="fas fa-copy"></i>
+                    <span data-translate="copy_link">Copy Link</span>
+                </button>
+            </div>
+        </section>
+        
+        <!-- How It Works -->
+        <section class="mb-12">
+            <h3 class="text-xl font-semibold mb-6 text-center" data-translate="how_it_works">How It Works</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-link text-pink-500 text-2xl"></i>
+                    </div>
+                    <h4 class="font-medium mb-2" data-translate="step1_title">Paste Link</h4>
+                    <p class="text-gray-600 text-sm" data-translate="step1_desc">Copy TikTok video link from app and paste it above</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-cog text-pink-500 text-2xl"></i>
+                    </div>
+                    <h4 class="font-medium mb-2" data-translate="step2_title">Process Video</h4>
+                    <p class="text-gray-600 text-sm" data-translate="step2_desc">We'll remove watermark and prepare download</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-download text-pink-500 text-2xl"></i>
+                    </div>
+                    <h4 class="font-medium mb-2" data-translate="step3_title">Download & Enjoy</h4>
+                    <p class="text-gray-600 text-sm" data-translate="step3_desc">Save high quality video to your device</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-black text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-pink-500">
+                        <path d="M12.525.12a1 1 0 00-1.05 0C9.96.89 4.392 3.62 4.392 8.55c0 4.94 3.72 8.35 4.89 9.29 1.17-.94 4.89-4.36 4.89-9.29 0-4.93-5.57-7.66-7.075-8.43zM8.18 21.29a1 1 0 01-1.36-.48 1 1 0 01.46-1.34c.48-.22 1.17-.53 1.9-.89.74-.36 1.48-.76 2.07-1.15a10.9 10.9 0 001.32-.94 1 1 0 011.17 0c.34.25.74.51 1.18.74.45.24.89.44 1.3.6.4.16.78.3 1.14.4.35.1.66.17.93.22.27.05.5.07.67.07.17 0 .3-.02.38-.05.08-.02.16-.06.27-.12.1-.05.18-.1.24-.16a1 1 0 01.5-.13 1 1 0 01.73.3 1 1 0 01.3.74 1 1 0 01-1.08.96 1 1 0 01-.8-.4 1 1 0 01-.16-.3 1 1 0 00-.98-.66 1 1 0 00-.98.66 1 1 0 01-1.96-.13 1 1 0 011.02-1.19z" />
+                        <path d="M12 22a10 10 0 100-20 10 10 0 000 20z" />
+                    </svg>
+                    <span class="font-bold">Tik<span class="text-pink-500">Snap</span></span>
+                </div>
+                <div class="text-center md:text-right">
+                    <p class="text-gray-400 text-sm" data-translate="footer_text">© 2023 TikSnap. Download TikTok videos without watermark.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Language translations
+        const translations = {
+            en: {
+                hero_title: "Download TikTok Videos Without Watermark",
+                hero_subtitle: "Paste your TikTok link below to download high quality videos without any watermark",
+                input_placeholder: "Paste TikTok link here...",
+                download_button: "Download",
+                processing: "Processing your link...",
+                preview_title: "Video Preview",
+                download_hd: "Download HD",
+                save_gallery: "Save to Gallery",
+                copy_link: "Copy Link",
+                how_it_works: "How It Works",
+                step1_title: "Paste Link",
+                step1_desc: "Copy TikTok video link from app and paste it above",
+                step2_title: "Process Video",
+                step2_desc: "We'll remove watermark and prepare download",
+                step3_title: "Download & Enjoy",
+                step3_desc: "Save high quality video to your device",
+                footer_text: "© 2023 TikSnap. Download TikTok videos without watermark.",
+                invalid_url: "Please enter a valid TikTok URL",
+                downloading: "Downloading video...",
+                download_complete: "Download complete!",
+                saved_to_gallery: "Video saved to gallery!",
+                copied: "Link copied to clipboard!"
+            },
+            id: {
+                hero_title: "Unduh Video TikTok Tanpa Watermark",
+                hero_subtitle: "Tempel link TikTok Anda di bawah untuk mengunduh video berkualitas tinggi tanpa watermark",
+                input_placeholder: "Tempel link TikTok di sini...",
+                download_button: "Unduh",
+                processing: "Memproses link Anda...",
+                preview_title: "Pratinjau Video",
+                download_hd: "Unduh HD",
+                save_gallery: "Simpan ke Galeri",
+                copy_link: "Salin Link",
+                how_it_works: "Cara Kerja",
+                step1_title: "Tempel Link",
+                step1_desc: "Salin link video TikTok dari aplikasi dan tempel di atas",
+                step2_title: "Proses Video",
+                step2_desc: "Kami akan menghapus watermark dan menyiapkan unduhan",
+                step3_title: "Unduh & Nikmati",
+                step3_desc: "Simpan video berkualitas tinggi ke perangkat Anda",
+                footer_text: "© 2023 TikSnap. Unduh video TikTok tanpa watermark.",
+                invalid_url: "Masukkan URL TikTok yang valid",
+                downloading: "Mengunduh video...",
+                download_complete: "Unduhan selesai!",
+                saved_to_gallery: "Video disimpan ke galeri!",
+                copied: "Link disalin ke clipboard!"
+            },
+            es: {
+                hero_title: "Descarga videos de TikTok sin marca de agua",
+                hero_subtitle: "Pega tu enlace de TikTok a continuación para descargar videos de alta calidad sin marca de agua",
+                input_placeholder: "Pega el enlace de TikTok aquí...",
+                download_button: "Descargar",
+                processing: "Procesando tu enlace...",
+                preview_title: "Vista previa del video",
+                download_hd: "Descargar HD",
+                save_gallery: "Guardar en galería",
+                copy_link: "Copiar enlace",
+                how_it_works: "Cómo funciona",
+                step1_title: "Pegar enlace",
+                step1_desc: "Copia el enlace del video de TikTok desde la aplicación y pégalo arriba",
+                step2_title: "Procesar video",
+                step2_desc: "Eliminaremos la marca de agua y prepararemos la descarga",
+                step3_title: "Descargar y disfrutar",
+                step3_desc: "Guarda el video de alta calidad en tu dispositivo",
+                footer_text: "© 2023 TikSnap. Descarga videos de TikTok sin marca de agua.",
+                invalid_url: "Ingrese una URL de TikTok válida",
+                downloading: "Descargando video...",
+                download_complete: "¡Descarga completa!",
+                saved_to_gallery: "¡Video guardado en la galería!",
+                copied: "¡Enlace copiado al portapapeles!"
+            },
+            fr: {
+                hero_title: "Téléchargez des vidéos TikTok sans filigrane",
+                hero_subtitle: "Collez votre lien TikTok ci-dessous pour télécharger des vidéos de haute qualité sans filigrane",
+                input_placeholder: "Collez le lien TikTok ici...",
+                download_button: "Télécharger",
+                processing: "Traitement de votre lien...",
+                preview_title: "Aperçu vidéo",
+                download_hd: "Télécharger HD",
+                save_gallery: "Enregistrer dans la galerie",
+                copy_link: "Copier le lien",
+                how_it_works: "Comment ça marche",
+                step1_title: "Coller le lien",
+                step1_desc: "Copiez le lien vidéo TikTok depuis l'application et collez-le ci-dessus",
+                step2_title: "Traiter la vidéo",
+                step2_desc: "Nous supprimerons le filigrane et préparerons le téléchargement",
+                step3_title: "Télécharger et profiter",
+                step3_desc: "Enregistrez la vidéo haute qualité sur votre appareil",
+                footer_text: "© 2023 TikSnap. Téléchargez des vidéos TikTok sans filigrane.",
+                invalid_url: "Veuillez entrer une URL TikTok valide",
+                downloading: "Téléchargement de la vidéo...",
+                download_complete: "Téléchargement terminé!",
+                saved_to_gallery: "Vidéo enregistrée dans la galerie!",
+                copied: "Lien copié dans le presse-papiers!"
+            },
+            ja: {
+                hero_title: "透かしなしでTikTok動画をダウンロード",
+                hero_subtitle: "透かしのない高品質な動画をダウンロードするには、TikTokのリンクを貼り付けてください",
+                input_placeholder: "TikTokのリンクをここに貼り付けてください...",
+                download_button: "ダウンロード",
+                processing: "リンクを処理しています...",
+                preview_title: "動画プレビュー",
+                download_hd: "HDでダウンロード",
+                save_gallery: "ギャラリーに保存",
+                copy_link: "リンクをコピー",
+                how_it_works: "使い方",
+                step1_title: "リンクを貼り付け",
+                step1_desc: "アプリからTikTok動画のリンクをコピーして貼り付けてください",
+                step2_title: "動画を処理",
+                step2_desc: "透かしを削除してダウンロードを準備します",
+                step3_title: "ダウンロードして楽しむ",
+                step3_desc: "高品質な動画を端末に保存します",
+                footer_text: "© 2023 TikSnap. TikTok動画を透かしなしでダウンロード。",
+                invalid_url: "有効なTikTokのURLを入力してください",
+                downloading: "動画をダウンロード中...",
+                download_complete: "ダウンロードが完了しました！",
+                saved_to_gallery: "動画をギャラリーに保存しました！",
+                copied: "リンクをクリップボードにコピーしました！"
+            }
+        };
+
+        // Current language
+        let currentLang = 'en';
+
+        // DOM Elements
+        const tiktokUrlInput = document.getElementById('tiktokUrl');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const errorContainer = document.getElementById('errorContainer');
+        const errorText = document.getElementById('errorText');
+        const videoPreviewSection = document.getElementById('videoPreviewSection');
+        const videoPreview = document.getElementById('videoPreview');
+        const downloadHD = document.getElementById('downloadHD');
+        const saveToGallery = document.getElementById('saveToGallery');
+        const copyLink = document.getElementById('copyLink');
+        const currentLanguageDisplay = document.getElementById('current-language');
+
+        // Language selector
+        document.querySelectorAll('.language-dropdown a').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const lang = this.getAttribute('data-lang');
+                currentLang = lang;
+                
+                // Update language display
+                currentLanguageDisplay.textContent = this.textContent.trim();
+                
+                // Update all translatable elements
+                document.querySelectorAll('[data-translate]').forEach(el => {
+                    const key = el.getAttribute('data-translate');
+                    el.textContent = translations[lang][key] || translations['en'][key];
+                });
+                
+                // Update input placeholder
+                if (tiktokUrlInput.hasAttribute('data-translate')) {
+                    tiktokUrlInput.placeholder = translations[lang]['input_placeholder'];
+                }
+            });
+        });
+
+        // Validate TikTok URL
+        function isValidTikTokUrl(url) {
+            const patterns = [
+                /^https?:\/\/(www\.|m\.)?tiktok\.com\/@.+\/video\/\d+/,
+                /^https?:\/\/(vm\.tiktok\.com|vt\.tiktok\.com)\/\w+/,
+                /^https?:\/\/(www\.)?tiktok\.com\/t\/\w+/,
+                /^https?:\/\/www\.tiktok\.com\/embed\/\w+/
+            ];
+            return patterns.some(pattern => pattern.test(url));
+        }
+
+        // Simulate download process
+        function simulateDownload() {
+            progressContainer.classList.remove('hidden');
+            let progress = 0;
+            
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress > 100) progress = 100;
+                progressBar.style.width = `${progress}%`;
+                
+                if (progress === 100) {
+                    clearInterval(interval);
+                    progressText.textContent = translations[currentLang]['download_complete'];
+                    showVideoPreview();
+                } else {
+                    progressText.textContent = translations[currentLang]['processing'];
+                }
+            }, 300);
+        }
+
+        // Show video preview (simulated)
+        function showVideoPreview() {
+            videoPreviewSection.classList.remove('hidden');
+            // In a real app, we would set the video source to the downloaded video
+            videoPreview.src = "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4";
+        }
+
+        // Download button event
+        downloadBtn.addEventListener('click', function() {
+            const url = tiktokUrlInput.value.trim();
+            
+            if (!isValidTikTokUrl(url)) {
+                errorContainer.classList.remove('hidden');
+                errorText.textContent = translations[currentLang]['invalid_url'];
+                tiktokUrlInput.focus();
+                tiktokUrlInput.select();
+                setTimeout(() => {
+                    errorContainer.classList.add('hidden');
+                }, 3000);
+                return;
+            }
+            
+            errorContainer.classList.add('hidden');
+            downloadBtn.disabled = true;
+            downloadBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>${translations[currentLang]['downloading']}</span>`;
+            
+            // Simulate API call with timeout
+            setTimeout(() => {
+                simulateDownload();
+                downloadBtn.disabled = false;
+                downloadBtn.innerHTML = `<i class="fas fa-download"></i> <span>${translations[currentLang]['download_button']}</span>`;
+            }, 1000);
+        });
+
+        // Download HD button
+        downloadHD.addEventListener('click', function() {
+            alert(translations[currentLang]['download_complete']);
+        });
+
+        // Save to gallery button
+        saveToGallery.addEventListener('click', function() {
+            alert(translations[currentLang]['saved_to_gallery']);
+        });
+
+        // Copy link button
+        copyLink.addEventListener('click', function() {
+            navigator.clipboard.writeText(tiktokUrlInput.value);
+            alert(translations[currentLang]['copied']);
+        });
+
+        // Enable paste event
+        tiktokUrlInput.addEventListener('paste', function(e) {
+            setTimeout(() => {
+                const pastedText = e.clipboardData.getData('text');
+                if (!isValidTikTokUrl(pastedText)) {
+                    errorContainer.classList.remove('hidden');
+                    errorText.textContent = translations[currentLang]['invalid_url'];
+                    setTimeout(() => {
+                        errorContainer.classList.add('hidden');
+                    }, 3000);
+                } else {
+                    downloadBtn.click();
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>
+
